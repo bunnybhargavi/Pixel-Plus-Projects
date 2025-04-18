@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Udemy Clone - Learning Platform</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css">
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    :root {
+      --udemy-purple: #a435f0;
+      --udemy-purple-dark: #8710d8;
+      --gray-100: #f7f9fa;
+      --gray-200: #eef1f2;
+      --gray-300: #d1d7dc;
+      --gray-400: #acadb0;
+      --gray-600: #6a6f73;
+      --gray-700: #474c4f;
+      --gray-900: #2d2f31;
+    }
+
+    body {
+      color: var(--gray-900);
+      background-color: #fff;
+      line-height: 1.5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .container {
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    /* Header Styles */
+    .header {
+      border-bottom: 1px solid var(--gray-300);
+      padding: 12px 0;
+      background-color: white;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 28px;
+      color: var(--udemy-purple);
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 600px;
+      margin: 0 24px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--gray-600);
+      border-radius: 50px;
+      font-size: 14px;
+    }
+
+    .search-bar button {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      font-size: 18px;
+    }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .header-link {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 10px;
+    }
+
+    .header-link:hover {
+      color: var(--udemy-purple);
+    }
+
+    .icon-link {
+      font-size: 22px;
+      color: var(--gray-700);
+    }
+
+    .icon-link:hover {
+      color: var(--udemy-purple);
+    }
+
+    .cart-icon {
+      position: relative;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: var(--udemy-purple);
+      color: white;
+      font-size: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Streak Feature */
+    .streak-icon {
+      position: relative;
+    }
+
+    .streak-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #f6b100;
+      color: black;
+      font-size: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .streak-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      z-index: 1002;
+      max-width: 400px;
+      width: 90%;
+      display: none;
+    }
+
+    .streak-modal.open {
+      display: block;
+    }
+
+    .streak-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .streak-title {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .streak-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--gray-600);
+    }
+
+    .streak-content {
+      text-align: center;
+    }
+
+    .streak-count {
+      font-size: 40px;
+      font-weight: 700;
+      color: #f6b100;
+      margin-bottom: 8px;
+    }
+
+    .streak-calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .calendar-day {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 12px;
+    }
+
+    .day-label {
+      font-weight: 600;
+      color: var(--gray-600);
+    }
+
+    .day-inactive {
+      background-color: var(--gray-200);
+      color: var(--gray-600);
+    }
+
+    .day-active {
+      background-color: #ffeeb4;
+      color: #956800;
+    }
+
+    .day-current {
+      background-color: #f6b100;
+      color: white;
+      font-weight: 600;
+    }
+
+    .streak-milestone {
+      background-color: var(--gray-100);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .milestone-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #fff4cc;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f6b100;
+      font-size: 20px;
+    }
+
+    .milestone-text {
+      flex: 1;
+    }
+
+    .milestone-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .milestone-description {
+      font-size: 14px;
+      color: var(--gray-600);
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background-color: #2d2f31;
+      color: white;
+      padding: 48px 0;
+      position: relative;
+      background-image: url('https://img-c.udemycdn.com/notices/web_carousel_slide/image/9652f354-5e37-400c-856e-ee28f98f27d6.png');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(45, 47, 49, 0.3);
+    }
+
+    .hero-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 500px;
+      background-color: white;
+      padding: 32px;
+      color: var(--gray-900);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-title {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      margin-bottom: 24px;
+      color: var(--gray-700);
+    }
+
+    .hero-image {
+      width: 400px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--udemy-purple);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--udemy-purple-dark);
+    }
+
+    .btn-outline {
+      background-color: white;
+      color: var(--gray-900);
+      border: 1px solid var(--gray-900);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--gray-100);
+    }
+
+    /* Trust Banner */
+    .trust-banner {
+      background-color: #f7f9fa;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--gray-300);
+    }
+
+    .trust-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .trust-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-width: 180px;
+    }
+
+    .trust-icon {
+      font-size: 40px;
+      color: var(--udemy-purple);
+      margin-bottom: 16px;
+    }
+
+    .trust-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .trust-description {
+      font-size: 14px;
+      color: var(--gray-600);
+    }
+
+    /* Course Card */
+    .courses-section {
+      padding: 48px 0;
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-size: 16px;
+      color: var(--gray-600);
+      margin-bottom: 24px;
+    }
+
+    .course-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--gray-300);
+      margin-bottom: 24px;
+    }
+
+    .course-tab {
+      padding: 16px 24px;
+      font-weight: 600;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+    }
+
+    .course-tab.active {
+      color: var(--udemy-purple);
+      border-bottom: 2px solid var(--udemy-purple);
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .course-card {
+      border: 1px solid var(--gray-300);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+    }
+
+    .course-card:hover {
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .course-image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .course-content {
+      padding: 16px;
+    }
+
+    .course-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .course-instructor {
+      font-size: 12px;
+      color: var(--gray-600);
+      margin-bottom: 8px;
+    }
+
+    .course-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .rating-score {
+      font-weight: 700;
+      color: #b4690e;
+    }
+
+    .rating-count {
+      font-size: 12px;
+      color: var(--gray-600);
+    }
+
+    .course-price {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .current-price {
+      font-weight: 700;
+    }
+
+    .original-price {
+      text-decoration: line-through;
+      color: var(--gray-600);
+      font-size: 14px;
+    }
+
+    .bestseller-badge {
+      display: inline-block;
+      background-color: #eceb98;
+      color: #3d3c0a;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 6px;
+      margin-bottom: 8px;
+    }
+
+    /* Recommendation Section */
+    .recommendation-section {
+      padding: 48px 0;
+      background: linear-gradient(to right, var(--gray-100), var(--gray-200));
+    }
+
+    .recommendation-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--gray-300);
+      margin-bottom: 24px;
+    }
+
+    .recommendation-tab {
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      color: var(--gray-600);
+    }
+
+    .recommendation-tab.active {
+      color: var(--udemy-purple);
+      border-bottom: 2px solid var(--udemy-purple);
+    }
+
+    .recommendation-tab:hover {
+      color: var(--udemy-purple);
+    }
+
+    .ai-advisor-cta {
+      margin-top: 32px;
+      background-color: white;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    .cta-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .cta-content {
+      flex: 3;
+      min-width: 250px;
+    }
+
+    .cta-image {
+      flex: 1;
+      min-width: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cta-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: A12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cta-icon {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(to right, #f7f0ff, #e7d4ff);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: var(--udemy-purple);
+      animation: pulse 2s infinite;
+    }
+
+    /* Skeleton Loading */
+    .skeleton {
+      background-color: var(--gray-200);
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .skeleton-image {
+      height: 150px;
+      width: 100%;
+    }
+
+    .skeleton-title {
+      height: 18px;
+      width: 90%;
+    }
+
+    .skeleton-text {
+      height: 14px;
+      width: 70%;
+    }
+
+    /* AI Advisor Page */
+    .advisor-page {
+      padding: 48px 0;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .advisor-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .advisor-icon {
+      width: 64px;
+      height: 64px;
+      background-color: #f7f0ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--udemy-purple);
+      margin: 0 auto 16px;
+    }
+
+    .advisor-form {
+      background-color: white;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .form-required {
+      color: red;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--gray-300);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-hint {
+      font-size: 12px;
+      color: var(--gray-600);
+      margin-top: 4px;
+    }
+
+    .form-error {
+      background-color: #fff1f0;
+      border: 1px solid #ffccc7;
+      border-radius: 4px;
+      padding: 12px;
+      color: #cf1322;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .info-box {
+      background-color: var(--gray-100);
+      border: 1px solid var(--gray-300);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .info-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-list {
+      list-style-position: inside;
+      padding-left: 8px;
+    }
+
+    .info-list li {
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--gray-600);
+    }
+
+    .loading-container {
+      background-color: white;
+      padding: 32px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .loading-spinner {
+      width: 64px;
+      height: 64px;
+      border: 4px solid var(--gray-200);
+      border-top: 4px solid var(--udemy-purple);
+      border-radius: 50%;
+      margin: 0 auto 16px;
+    }
+
+    .results-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .path-overview {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .path-header {
+      background: linear-gradient(to right, #a435f0, #8710d8);
+      padding: 16px 24px;
+      color: white;
+    }
+
+    .path-content {
+      padding: 24px;
+    }
+
+    .path-description {
+      margin-bottom: 24px;
+    }
+
+    .path-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .detail-box {
+      background-color: var(--gray-100);
+      padding: 16px;
+      border-radius: 4px;
+    }
+
+    .detail-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-tag {
+      background-color: #f7f0ff;
+      color: var(--udemy-purple-dark);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 50px;
+    }
+
+    .course-reason {
+      background-color: #f0fff4;
+      border-radius: 4px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+
+    .reason-title {
+      font-weight: 600;
+      color: #52c41a;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+    }
+    
+    @media (max-width: 768px) {
+      .search-bar {
+        display: none;
+      }
+      
+      .header-links .header-link:not(.icon-link) {
+        display: none;
+      }
+      
+      .hero-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .hero-content {
+        margin-bottom: 24px;
+      }
+      
+      .hero-image {
+        width: 100%;
+        height: 200px;
+      }
+      
+      .course-tab {
+        padding: 12px;
+        font-size: 14px;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .path-details {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Footer */
+    .footer {
+      background-color: var(--gray-900);
+      color: white;
+      padding: 48px 0 24px;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+
+    .footer-column h3 {
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-link {
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--gray-400);
+    }
+
+    .footer-link:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--gray-400);
+      padding-top: 16px;
+      border-top: 1px solid var(--gray-700);
+    }
+
+    .footer-logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    /* Cart */
+    .cart {
+      position: fixed;
+      top: 0;
+      right: -350px;
+      width: 350px;
+      height: 100vh;
+      background-color: white;
+      box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+      transition: right 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .cart.open {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--gray-300);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .cart-items {
+      padding: 16px;
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--gray-600);
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gray-300);
+    }
+
+    .cart-item-image {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .cart-item-details {
+      flex: 1;
+    }
+
+    .cart-item-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .cart-item-price {
+      font-weight: 700;
+    }
+
+    .cart-item-remove {
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .cart-item-remove:hover {
+      color: #e41c38;
+    }
+
+    .cart-footer {
+      padding: 16px;
+      border-top: 1px solid var(--gray-300);
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .total-label {
+      font-weight: 600;
+    }
+
+    .total-amount {
+      font-weight: 700;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--udemy-purple);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .checkout-btn:hover {
+      background-color: var(--udemy-purple-dark);
+    }
+
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      display: none;
+    }
+
+    .cart-overlay.open {
+      display: block;
+    }
+
+    .page-container {
+      min-height: 80vh;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="#" class="logo">udemy</a>
+      
+      <div class="search-bar">
+        <input type="text" placeholder="Search for anything">
+        <button><i class="ri-search-line"></i></button>
+      </div>
+      
+      <div class="header-links">
+        <a href="#" class="header-link">Categories</a>
+        <a href="#" class="header-link">Business</a>
+        <a href="#" class="header-link">Teach on Udemy</a>
+        <a href="#advisor" class="header-link">AI Advisor</a>
+        <a href="#" class="header-link icon-link streak-icon" id="streak-button">
+          <i class="ri-fire-line"></i>
+          <span class="streak-badge">5</span>
+        </a>
+        <a href="#" class="header-link icon-link"><i class="ri-heart-line"></i></a>
+        <a href="#" class="header-link icon-link cart-icon" id="cart-button">
+          <i class="ri-shopping-cart-line"></i>
+          <span class="cart-badge">0</span>
+        </a>
+        <a href="#" class="header-link icon-link"><i class="ri-user-line"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div id="page-container" class="page-container">
+    <!-- Home Page Content -->
+    <div id="home-page">
+      <!-- Hero Banner -->
+      <section class="hero-banner">
+        <div class="hero-overlay"></div>
+        <div class="container hero-container">
+          <div class="hero-content">
+            <h1 class="hero-title">Udemy Flash Sale: 24 hours to save!</h1>
+            <p class="hero-subtitle">Get top courses from ₹499. Just one day to save, but a lifetime to learn for. Sale ends tonight.</p>
+            <button class="btn btn-primary">Explore Courses</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trust Banner -->
+      <section class="trust-banner">
+        <div class="container trust-container">
+          <div class="trust-item">
+            <i class="ri-award-line trust-icon"></i>
+            <h3 class="trust-title">185,000+ courses</h3>
+            <p class="trust-description">Learn from expert instructors</p>
+          </div>
+          <div class="trust-item">
+            <i class="ri-award-fill trust-icon"></i>
+            <h3 class="trust-title">Trusted content</h3>
+            <p class="trust-description">Quality courses reviewed by experts</p>
+          </div>
+          <div class="trust-item">
+            <i class="ri-time-line trust-icon"></i>
+            <h3 class="trust-title">Flexible learning</h3>
+            <p class="trust-description">Learn at your own pace</p>
+          </div>
+          <div class="trust-item">
+            <i class="ri-medal-line trust-icon"></i>
+            <h3 class="trust-title">Certificates</h3>
+            <p class="trust-description">Earn certificates upon completion</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Courses Section -->
+      <section class="courses-section">
+        <div class="container">
+          <h2 class="section-title">A broad selection of courses</h2>
+          <p class="section-subtitle">Choose from over 185,000 online video courses with new additions published every month</p>
+          
+          <div class="course-tabs">
+            <button class="course-tab active" data-category="popular">Most Popular</button>
+            <button class="course-tab" data-category="new">New & Trending</button>
+            <button class="course-tab" data-category="top-rated">Top Rated</button>
+          </div>
+          
+          <div class="course-grid" id="course-grid">
+            <!-- Course cards will be dynamically added here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Recommendation Section -->
+      <section class="recommendation-section">
+        <div class="container">
+          <h2 class="section-title">Personalized Course Recommendations</h2>
+          <p class="section-subtitle">Courses selected just for you, based on your interests and learning history</p>
+          
+          <div class="recommendation-tabs">
+            <button class="recommendation-tab active" data-recommendation="trending">Trending</button>
+            <button class="recommendation-tab" data-recommendation="similar">Similar Courses</button>
+            <button class="recommendation-tab" data-recommendation="new">New Releases</button>
+          </div>
+          
+          <div class="course-grid" id="recommendation-grid">
+            <!-- Recommendation cards will be dynamically added here -->
+          </div>
+          
+          <div class="ai-advisor-cta">
+            <div class="cta-container">
+              <div class="cta-content">
+                <h3 class="cta-title"><i class="ri-brain-line" style="color: var(--udemy-purple);"></i>Need personalized learning recommendations?</h3>
+                <p class="cta-description" style="margin-bottom: 16px;">Our AI Learning Path Advisor can create a custom learning path based on your goals, interests, and current skill level. Get started with your personalized learning journey today!</p>
+                <button class="btn btn-primary" id="go-to-advisor-btn"><i class="ri-brain-line" style="margin-right: 8px;"></i>Get AI Recommendations</button>
+              </div>
+              <div class="cta-image">
+                <div class="cta-icon">
+                  <i class="ri-brain-line"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- AI Advisor Page -->
+    <div id="advisor-page" class="hidden">
+      <div class="container advisor-page">
+        <div class="advisor-header">
+          <div class="advisor-icon">
+            <i class="ri-brain-line"></i>
+          </div>
+          <h1 class="section-title">AI Learning Path Advisor</h1>
+          <p class="section-subtitle">Get personalized learning recommendations based on your goals, interests, and current skills</p>
+        </div>
+        
+        <!-- Input Form -->
+        <div id="advisor-input" class="advisor-form">
+          <form id="advisor-form">
+            <div class="form-group">
+              <label for="goals" class="form-label">
+                What are your learning goals?<span class="form-required">*</span>
+              </label>
+              <textarea id="goals" class="form-textarea" placeholder="e.g., Build a full-stack web application, Learn data visualization, Master cloud computing" required></textarea>
+              <p class="form-hint">Enter comma-separated goals that describe what you want to achieve</p>
+            </div>
+            
+            <div class="form-group">
+              <label for="interests" class="form-label">
+                What topics are you interested in?<span class="form-required">*</span>
+              </label>
+              <textarea id="interests" class="form-textarea" placeholder="e.g., React, Machine learning, AWS, Mobile development" required></textarea>
+              <p class="form-hint">Enter comma-separated topics that you're interested in learning about</p>
+            </div>
+            
+            <div class="form-group">
+              <label for="skills" class="form-label">
+                What skills do you already have? (Optional)
+              </label>
+              <input type="text" id="skills" class="form-input" placeholder="e.g., JavaScript, Python, HTML/CSS">
+              <p class="form-hint">Enter comma-separated skills you already possess</p>
+            </div>
+            
+            <div class="form-group">
+              <label for="duration" class="form-label">
+                Preferred learning timeline
+              </label>
+              <select id="duration" class="form-select">
+                <option value="short">Short (1-3 months)</option>
+                <option value="medium" selected>Medium (3-6 months)</option>
+                <option value="long">Long (6+ months)</option>
+              </select>
+            </div>
+            
+            <div id="form-error" class="form-error hidden"></div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Generate Learning Path</button>
+          </form>
+        </div>
+        
+        <div id="info-box" class="info-box">
+          <h3 class="info-title"><i class="ri-information-line" style="color: #1890ff;"></i>How it works</h3>
+          <ol class="info-list">
+            <li>Tell us about your learning goals and interests</li>
+            <li>Share your current skill level (optional)</li>
+            <li>Our AI will generate a personalized learning path for you</li>
+            <li>Explore recommended courses tailored to your needs</li>
+          </ol>
+        </div>
+        
+        <!-- Loading State -->
+        <div id="advisor-loading" class="loading-container hidden">
+          <div class="loading-spinner animate-spin"></div>
+          <p style="font-size: 18px; font-weight: 500; margin-bottom: 8px;">Generating your personalized learning path...</p>
+          <p style="color: var(--gray-600);">This may take a moment as we analyze your goals and interests</p>
+        </div>
+        
+        <!-- Results -->
+        <div id="advisor-results" class="results-container hidden">
+          <!-- Learning Path Overview -->
+          <div class="path-overview">
+            <div class="path-header">
+              <h2 id="path-name" style="font-size: 24px; font-weight: 700;"></h2>
+            </div>
+            <div class="path-content">
+              <p id="path-description" class="path-description"></p>
+              
+              <div class="path-details">
+                <div class="detail-box">
+                  <h3 class="detail-title"><i class="ri-time-line" style="color: var(--udemy-purple);"></i>Estimated Timeline</h3>
+                  <p id="path-timeline" style="font-size: 14px;"></p>
+                </div>
+                <div class="detail-box">
+                  <h3 class="detail-title"><i class="ri-target-line" style="color: var(--udemy-purple);"></i>Learning Goals</h3>
+                  <ul id="path-goals" style="font-size: 14px; padding-left: 20px;"></ul>
+                </div>
+              </div>
+              
+              <div>
+                <h3 class="detail-title"><i class="ri-award-line" style="color: var(--udemy-purple);"></i>Skills You'll Gain</h3>
+                <div id="path-skills" class="skills-list"></div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Recommended Courses -->
+          <div class="path-overview">
+            <div class="path-content">
+              <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Recommended Courses</h3>
+              <div id="recommended-courses" class="course-grid"></div>
+            </div>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button id="reset-advisor" class="btn btn-outline" style="flex: 1;">Create Another Learning Path</button>
+            <button id="explore-courses" class="btn btn-primary" style="flex: 1;">Explore More Courses</button>
+          </div>
+        </div>
+        
+        <!-- Error State -->
+        <div id="advisor-error" class="loading-container hidden">
+          <div style="width: 64px; height: 64px; background-color: #fff1f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+            <i class="ri-error-warning-line" style="font-size: 32px; color: #f5222d;"></i>
+          </div>
+          <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Oops! Something went wrong</h2>
+          <p id="error-message" style="color: var(--gray-600); margin-bottom: 24px;"></p>
+          <button id="try-again" class="btn btn-outline">Try Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>Udemy Business</h3>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Teach on Udemy</a></li>
+            <li><a href="#" class="footer-link">Get the app</a></li>
+            <li><a href="#" class="footer-link">About us</a></li>
+            <li><a href="#" class="footer-link">Contact us</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Careers</h3>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Blog</a></li>
+            <li><a href="#" class="footer-link">Help and Support</a></li>
+            <li><a href="#" class="footer-link">Affiliate</a></li>
+            <li><a href="#" class="footer-link">Investors</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Terms</h3>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Privacy policy</a></li>
+            <li><a href="#" class="footer-link">Cookie settings</a></li>
+            <li><a href="#" class="footer-link">Sitemap</a></li>
+            <li><a href="#" class="footer-link">Accessibility statement</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-logo">udemy</div>
+        <div>© 2025 Udemy Clone, Inc.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Shopping Cart -->
+  <div class="cart" id="cart">
+    <div class="cart-header">
+      <h3>Shopping Cart</h3>
+      <button class="cart-close" id="cart-close"><i class="ri-close-line"></i></button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <div class="cart-empty">Your cart is empty. Keep shopping to find a course!</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span class="total-label">Total:</span>
+        <span class="total-amount" id="cart-total">$0.00</span>
+      </div>
+      <button class="checkout-btn">Checkout</button>
+    </div>
+  </div>
+  <div class="cart-overlay" id="cart-overlay"></div>
+
+  <!-- Streak Modal -->
+  <div class="streak-modal" id="streak-modal">
+    <div class="streak-header">
+      <h3 class="streak-title"><i class="ri-fire-line" style="color: #f6b100;"></i>Learning Streak</h3>
+      <button class="streak-close" id="streak-close"><i class="ri-close-line"></i></button>
+    </div>
+    <div class="streak-content">
+      <div class="streak-count">5 Days</div>
+      <p>You're on a roll! Keep learning daily to build your streak.</p>
+      
+      <div class="streak-calendar">
+        <div class="calendar-day day-label">Mon</div>
+        <div class="calendar-day day-label">Tue</div>
+        <div class="calendar-day day-label">Wed</div>
+        <div class="calendar-day day-label">Thu</div>
+        <div class="calendar-day day-label">Fri</div>
+        <div class="calendar-day day-label">Sat</div>
+        <div class="calendar-day day-label">Sun</div>
+        
+        <div class="calendar-day day-active">1</div>
+        <div class="calendar-day day-active">2</div>
+        <div class="calendar-day day-active">3</div>
+        <div class="calendar-day day-active">4</div>
+        <div class="calendar-day day-current">5</div>
+        <div class="calendar-day day-inactive">6</div>
+        <div class="calendar-day day-inactive">7</div>
+      </div>
+      
+      <div class="streak-milestone">
+        <div class="milestone-icon">
+          <i class="ri-trophy-line"></i>
+        </div>
+        <div class="milestone-text">
+          <p class="milestone-title">Next milestone: 7-day streak</p>
+          <p class="milestone-description">You'll earn a special achievement badge!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mock Data for Courses
+    const courses = [
+      {
+        id: 1,
+        title: "Complete Web Development Bootcamp 2023",
+        instructor: "Dr. Angela Yu",
+        rating: 4.7,
+        reviewsCount: 240563,
+        currentPrice: 19.99,
+        originalPrice: 129.99,
+        image: "https://img-c.udemycdn.com/course/240x135/1565838_e54e_16.jpg",
+        isBestseller: true,
+        category: "Web Development"
+      },
+      {
+        id: 2,
+        title: "Machine Learning A-Z: Hands-On Python & R",
+        instructor: "Kirill Eremenko, Hadelin de Ponteves",
+        rating: 4.5,
+        reviewsCount: 156742,
+        currentPrice: 24.99,
+        originalPrice: 149.99,
+        image: "https://img-c.udemycdn.com/course/240x135/950390_270f_3.jpg",
+        isBestseller: true,
+        category: "Data Science"
+      },
+      {
+        id: 3,
+        title: "Python for Data Science and Machine Learning",
+        instructor: "Jose Portilla",
+        rating: 4.6,
+        reviewsCount: 107354,
+        currentPrice: 19.99,
+        originalPrice: 129.99,
+        image: "https://img-c.udemycdn.com/course/240x135/903744_8eb2.jpg",
+        isBestseller: false,
+        category: "Data Science"
+      },
+      {
+        id: 4,
+        title: "React - The Complete Guide 2023",
+        instructor: "Maximilian Schwarzmüller",
+        rating: 4.8,
+        reviewsCount: 172853,
+        currentPrice: 19.99,
+        originalPrice: 129.99,
+        image: "https://img-c.udemycdn.com/course/240x135/1362070_b9a1_2.jpg",
+        isBestseller: true,
+        category: "Web Development"
+      },
+      {
+        id: 5,
+        title: "The Complete Machine Learning Course with Python",
+        instructor: "Sundog Education by Frank Kane",
+        rating: 4.5,
+        reviewsCount: 45231,
+        currentPrice: 19.99,
+        originalPrice: 149.99,
+        image: "https://img-c.udemycdn.com/course/240x135/2323706_bf4d_3.jpg",
+        isBestseller: false,
+        category: "Data Science"
+      },
+      {
+        id: 6,
+        title: "Advanced CSS and Sass: Flexbox, Grid, and More",
+        instructor: "Jonas Schmedtmann",
+        rating: 4.8,
+        reviewsCount: 42380,
+        currentPrice: 19.99,
+        originalPrice: 119.99,
+        image: "https://img-c.udemycdn.com/course/240x135/1026604_790b_2.jpg",
+        isBestseller: false,
+        category: "Web Development"
+      },
+      {
+        id: 7,
+        title: "JavaScript: The Complete Guide 2023",
+        instructor: "Maximilian Schwarzmüller",
+        rating: 4.7,
+        reviewsCount: 97654,
+        currentPrice: 19.99,
+        originalPrice: 129.99,
+        image: "https://img-c.udemycdn.com/course/240x135/851712_fc61_6.jpg",
+        isBestseller: true,
+        category: "Web Development"
+      },
+      {
+        id: 8,
+        title: "Complete Python Developer in 2023: Zero to Mastery",
+        instructor: "Andrei Neagoie",
+        rating: 4.6,
+        reviewsCount: 65432,
+        currentPrice: 19.99,
+        originalPrice: 129.99,
+        image: "https://img-c.udemycdn.com/course/240x135/2473048_8255_5.jpg",
+        isBestseller: false,
+        category: "Programming"
+      },
+    ];
+
+    // Cart functionality
+    let cart = [];
+    const cartButton = document.getElementById('cart-button');
+    const cartElement = document.getElementById('cart');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartClose = document.getElementById('cart-close');
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    const cartBadge = document.querySelector('.cart-badge');
+
+    // Streak functionality
+    const streakButton = document.getElementById('streak-button');
+    const streakModal = document.getElementById('streak-modal');
+    const streakClose = document.getElementById('streak-close');
+
+    // Toggle streak modal
+    function toggleStreakModal() {
+      streakModal.classList.toggle('open');
+      if (streakModal.classList.contains('open')) {
+        cartOverlay.classList.add('open');
+      } else {
+        cartOverlay.classList.remove('open');
+      }
+    }
+
+    // Streak event listeners
+    streakButton.addEventListener('click', toggleStreakModal);
+    streakClose.addEventListener('click', toggleStreakModal);
+
+    // Toggle cart
+    function toggleCart() {
+      cartElement.classList.toggle('open');
+      cartOverlay.classList.toggle('open');
+      
+      // Close streak modal if open
+      if (streakModal.classList.contains('open')) {
+        streakModal.classList.remove('open');
+      }
+    }
+
+    // Render cart items
+    function renderCart() {
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<div class="cart-empty">Your cart is empty. Keep shopping to find a course!</div>';
+      } else {
+        let cartHTML = '';
+        let total = 0;
+        
+        cart.forEach(item => {
+          total += item.currentPrice;
+          cartHTML += `
+            <div class="cart-item" data-id="${item.id}">
+              <img src="${item.image}" alt="${item.title}" class="cart-item-image">
+              <div class="cart-item-details">
+                <div class="cart-item-title">${item.title}</div>
+                <div class="cart-item-price">$${item.currentPrice.toFixed(2)}</div>
+              </div>
+              <button class="cart-item-remove" data-id="${item.id}"><i class="ri-delete-bin-line"></i></button>
+            </div>
+          `;
+        });
+        
+        cartItems.innerHTML = cartHTML;
+        cartTotal.textContent = `$${total.toFixed(2)}`;
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.cart-item-remove').forEach(button => {
+          button.addEventListener('click', function() {
+            const id = parseInt(this.getAttribute('data-id'));
+            removeFromCart(id);
+          });
+        });
+      }
+      
+      // Update cart badge
+      cartBadge.textContent = cart.length;
+    }
+
+    // Add to cart
+    function addToCart(courseId) {
+      const course = courses.find(c => c.id === courseId);
+      
+      if (course && !cart.some(item => item.id === courseId)) {
+        cart.push(course);
+        renderCart();
+        
+        // Show notification
+        showNotification(`${course.title} added to cart!`);
+      }
+    }
+
+    // Remove from cart
+    function removeFromCart(courseId) {
+      cart = cart.filter(item => item.id !== courseId);
+      renderCart();
+    }
+
+    // Show notification
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.style.position = 'fixed';
+      notification.style.bottom = '20px';
+      notification.style.right = '20px';
+      notification.style.backgroundColor = 'var(--udemy-purple)';
+      notification.style.color = 'white';
+      notification.style.padding = '12px 20px';
+      notification.style.borderRadius = '4px';
+      notification.style.zIndex = '1001';
+      notification.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transition = 'opacity 0.5s';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 500);
+      }, 3000);
+    }
+
+    // Cart event listeners
+    cartButton.addEventListener('click', toggleCart);
+    cartClose.addEventListener('click', toggleCart);
+    cartOverlay.addEventListener('click', function() {
+      if (cartElement.classList.contains('open')) {
+        toggleCart();
+      }
+      if (streakModal.classList.contains('open')) {
+        toggleStreakModal();
+      }
+    });
+
+    // Course Card Template
+    function createCourseCard(course) {
+      return `
+        <div class="course-card" data-id="${course.id}">
+          <img src="${course.image}" alt="${course.title}" class="course-image">
+          <div class="course-content">
+            <h3 class="course-title">${course.title}</h3>
+            <p class="course-instructor">${course.instructor}</p>
+            <div class="course-rating">
+              <span class="rating-score">${course.rating}</span>
+              <div class="rating-stars">★★★★★</div>
+              <span class="rating-count">(${(course.reviewsCount / 1000).toFixed(1)}k)</span>
+            </div>
+            <div class="course-price">
+              <span class="current-price">$${course.currentPrice.toFixed(2)}</span>
+              <span class="original-price">$${course.originalPrice.toFixed(2)}</span>
+            </div>
+            ${course.isBestseller ? '<span class="bestseller-badge">Bestseller</span>' : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    // Loading Skeleton Template
+    function createSkeletonLoader() {
+      return `
+        <div class="course-card animate-pulse">
+          <div class="skeleton skeleton-image"></div>
+          <div class="course-content">
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Render course cards
+    function renderCourses(containerId, courseData) {
+      const container = document.getElementById(containerId);
+      
+      // First show skeletons
+      let skeletonHTML = '';
+      for (let i = 0; i < 8; i++) {
+        skeletonHTML += createSkeletonLoader();
+      }
+      container.innerHTML = skeletonHTML;
+      
+      // Then load actual courses after delay
+      setTimeout(() => {
+        let coursesHTML = '';
+        courseData.forEach(course => {
+          coursesHTML += createCourseCard(course);
+        });
+        container.innerHTML = coursesHTML;
+        
+        // Add click event to course cards
+        container.querySelectorAll('.course-card').forEach(card => {
+          card.addEventListener('click', function() {
+            const courseId = parseInt(this.getAttribute('data-id'));
+            addToCart(courseId);
+          });
+        });
+      }, 1000);
+    }
+
+    // Filter courses by category
+    function filterCourses(category) {
+      if (category === 'popular') {
+        return courses.filter(course => course.reviewsCount > 100000);
+      } else if (category === 'new') {
+        return [...courses].sort((a, b) => b.id - a.id);
+      } else if (category === 'top-rated') {
+        return [...courses].sort((a, b) => b.rating - a.rating);
+      }
+      return courses;
+    }
+
+    // Filter recommendations
+    function filterRecommendations(type) {
+      if (type === 'trending') {
+        return [...courses].sort((a, b) => b.reviewsCount - a.reviewsCount).slice(0, 4);
+      } else if (type === 'similar') {
+        const randomCategory = courses[Math.floor(Math.random() * courses.length)].category;
+        return courses.filter(course => course.category === randomCategory).slice(0, 4);
+      } else if (type === 'new') {
+        return [...courses].sort(() => Math.random() - 0.5).slice(0, 4);
+      }
+      return courses.slice(0, 4);
+    }
+
+    // Initialize page
+    function initializeHomePage() {
+      // Render initial courses
+      renderCourses('course-grid', filterCourses('popular'));
+      renderCourses('recommendation-grid', filterRecommendations('trending'));
+      
+      // Add event listeners to course tabs
+      document.querySelectorAll('.course-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const category = this.getAttribute('data-category');
+          document.querySelectorAll('.course-tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          renderCourses('course-grid', filterCourses(category));
+        });
+      });
+      
+      // Add event listeners to recommendation tabs
+      document.querySelectorAll('.recommendation-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const type = this.getAttribute('data-recommendation');
+          document.querySelectorAll('.recommendation-tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          renderCourses('recommendation-grid', filterRecommendations(type));
+        });
+      });
+    }
+
+    // Initialize cart
+    renderCart();
+    
+    // Initialize the home page
+    initializeHomePage();
+
+    // Navigation
+    function showPage(pageId) {
+      document.querySelectorAll('#page-container > div').forEach(page => {
+        page.classList.add('hidden');
+      });
+      document.getElementById(pageId).classList.remove('hidden');
+      window.scrollTo(0, 0);
+    }
+
+    // Router
+    function handleNavigation() {
+      const hash = window.location.hash || '#';
+      if (hash === '#advisor') {
+        showPage('advisor-page');
+      } else {
+        showPage('home-page');
+      }
+    }
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleNavigation);
+    
+    // Initial navigation
+    handleNavigation();
+
+    // AI Advisor page
+    const advisorForm = document.getElementById('advisor-form');
+    const formError = document.getElementById('form-error');
+    const advisorInput = document.getElementById('advisor-input');
+    const advisorLoading = document.getElementById('advisor-loading');
+    const advisorResults = document.getElementById('advisor-results');
+    const advisorError = document.getElementById('advisor-error');
+    const infoBox = document.getElementById('info-box');
+    const errorMessage = document.getElementById('error-message');
+    
+    // Button references
+    const resetAdvisorBtn = document.getElementById('reset-advisor');
+    const tryAgainBtn = document.getElementById('try-again');
+    const exploreCoursesBtn = document.getElementById('explore-courses');
+    const goToAdvisorBtn = document.getElementById('go-to-advisor-btn');
+    
+    // Handle form submission
+    advisorForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const goals = document.getElementById('goals').value.trim();
+      const interests = document.getElementById('interests').value.trim();
+      
+      if (!goals || !interests) {
+        formError.textContent = "Please provide both your goals and interests";
+        formError.classList.remove('hidden');
+        return;
+      }
+      
+      formError.classList.add('hidden');
+      advisorInput.classList.add('hidden');
+      infoBox.classList.add('hidden');
+      advisorLoading.classList.remove('hidden');
+      
+      // Simulate API delay
+      setTimeout(generateLearningPath, 2000);
+    });
+    
+    // Generate learning path
+    function generateLearningPath() {
+      try {
+        const goals = document.getElementById('goals').value.trim();
+        const interests = document.getElementById('interests').value.trim();
+        const skills = document.getElementById('skills').value.trim();
+        const duration = document.getElementById('duration').value;
+        
+        const goalsArray = goals.split(',').map(g => g.trim()).filter(Boolean);
+        const interestsArray = interests.split(',').map(i => i.trim()).filter(Boolean);
+        const skillsArray = skills.split(',').map(s => s.trim()).filter(Boolean);
+        
+        // Generate a simulated learning path based on user input
+        const pathRecommendation = {
+          name: `${interestsArray[0] || 'Custom'} Learning Path`,
+          description: `This personalized learning path is designed to help you master ${interestsArray.join(', ')} while achieving your goals of ${goalsArray.join(', ')}.`,
+          goals: goalsArray,
+          recommendedCourses: [
+            { id: 1, title: 'Web Development Bootcamp', reason: 'Provides a strong foundation in web technologies' },
+            { id: 3, title: 'Python Data Science', reason: 'Aligns with your interest in data analysis and visualization' },
+            { id: 5, title: 'Machine Learning A-Z', reason: 'Perfect match for your AI/ML learning goals' },
+            { id: 7, title: 'JavaScript: The Complete Guide', reason: 'Essential for modern web development' }
+          ],
+          estimatedTimeToComplete: duration === 'short' ? '2-3 months' : duration === 'medium' ? '4-6 months' : '8-12 months',
+          skillsGained: [
+            ...interestsArray,
+            'Problem Solving',
+            'Critical Thinking',
+            'Project Management',
+            'Technical Documentation'
+          ]
+        };
+        
+        // Display the learning path
+        document.getElementById('path-name').textContent = pathRecommendation.name;
+        document.getElementById('path-description').textContent = pathRecommendation.description;
+        document.getElementById('path-timeline').textContent = pathRecommendation.estimatedTimeToComplete;
+        
+        // Display goals
+        const goalsElement = document.getElementById('path-goals');
+        goalsElement.innerHTML = '';
+        pathRecommendation.goals.slice(0, 3).forEach(goal => {
+          const li = document.createElement('li');
+          li.textContent = goal;
+          goalsElement.appendChild(li);
+        });
+        
+        // Display skills
+        const skillsElement = document.getElementById('path-skills');
+        skillsElement.innerHTML = '';
+        pathRecommendation.skillsGained.forEach(skill => {
+          const span = document.createElement('span');
+          span.className = 'skill-tag';
+          span.textContent = skill;
+          skillsElement.appendChild(span);
+        });
+        
+        // Display recommended courses
+        const recommendedCoursesElement = document.getElementById('recommended-courses');
+        recommendedCoursesElement.innerHTML = '';
+        
+        // Filter courses based on IDs in the recommendation
+        const courseIds = pathRecommendation.recommendedCourses.map(c => c.id);
+        const recommendedCourses = courses.filter(course => courseIds.includes(course.id));
+        
+        recommendedCourses.forEach(course => {
+          const recommendation = pathRecommendation.recommendedCourses.find(r => r.id === course.id);
+          const courseDiv = document.createElement('div');
+          courseDiv.className = 'course-card';
+          courseDiv.innerHTML = `
+            <img src="${course.image}" alt="${course.title}" class="course-image">
+            <div class="course-content">
+              <h3 class="course-title">${course.title}</h3>
+              <p class="course-instructor">${course.instructor}</p>
+              <div class="course-rating">
+                <span class="rating-score">${course.rating}</span>
+                <div class="rating-stars">★★★★★</div>
+                <span class="rating-count">(${(course.reviewsCount / 1000).toFixed(1)}k)</span>
+              </div>
+              <div class="course-price">
+                <span class="current-price">$${course.currentPrice.toFixed(2)}</span>
+                <span class="original-price">$${course.originalPrice.toFixed(2)}</span>
+              </div>
+              ${course.isBestseller ? '<span class="bestseller-badge">Bestseller</span>' : ''}
+              <div class="course-reason">
+                <p class="reason-title"><i class="ri-check-line"></i>Why this course?</p>
+                <p>${recommendation.reason}</p>
+              </div>
+            </div>
+          `;
+          recommendedCoursesElement.appendChild(courseDiv);
+          
+          // Add event listener to add course to cart
+          courseDiv.addEventListener('click', function() {
+            addToCart(course.id);
+          });
+        });
+        
+        advisorLoading.classList.add('hidden');
+        advisorResults.classList.remove('hidden');
+      } catch (error) {
+        showError("An error occurred while generating recommendations. Please try again.");
+      }
+    }
+    
+    // Show error
+    function showError(message) {
+      errorMessage.textContent = message;
+      advisorLoading.classList.add('hidden');
+      advisorResults.classList.add('hidden');
+      advisorInput.classList.add('hidden');
+      advisorError.classList.remove('hidden');
+    }
+    
+    // Reset form
+    function resetForm() {
+      advisorForm.reset();
+      formError.classList.add('hidden');
+      advisorResults.classList.add('hidden');
+      advisorError.classList.add('hidden');
+      advisorInput.classList.remove('hidden');
+      infoBox.classList.remove('hidden');
+    }
+    
+    // Button event listeners
+    resetAdvisorBtn.addEventListener('click', resetForm);
+    tryAgainBtn.addEventListener('click', resetForm);
+    exploreCoursesBtn.addEventListener('click', function() {
+      window.location.hash = '';
+    });
+    goToAdvisorBtn.addEventListener('click', function() {
+      window.location.hash = 'advisor';
+    });
+  </script>
+</body>
+</html>
